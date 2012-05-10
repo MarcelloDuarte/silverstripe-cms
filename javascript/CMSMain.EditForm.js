@@ -16,64 +16,6 @@
 		});
 
 		/**
-		* Class: .cms-edit-form input[name=URLSegment]
-		* 
-		 * Input validation on the URLSegment field
-		 */
-		$('.cms-edit-form input[name=URLSegment]').entwine({
-	
-			/**
-			 * Constructor: onmatch
-			 */
-			onmatch : function() {
-				var self = this;
-		
-				// intercept change event, do our own writing
-				this.bind('change', function(e) {
-					if(!self.val()) return;
-					
-					self.addClass('disabled').parents('.field:first').addClass('loading');
-					var oldVal = self.val();
-					self.suggest(oldVal, function(data) {
-						self.removeClass('disabled').parents('.field:first').removeClass('loading');
-						var newVal = decodeURIComponent(data.value);
-						self.val(newVal);
-						
-						if(oldVal != newVal) {
-							var confirmMessage = ss.i18n.sprintf(
-								ss.i18n._t('UPDATEURL.CONFIRMURLCHANGED', 'The URL has been changed to\n"%s'), 
-								data.value
-							);
-							jQuery.noticeAdd({'text':confirmMessage});
-						}
-					});
-					
-				});
-				
-				this._super();
-			},
-	
-			/**
-			 * Function: suggest
-			 *  
-			 * Return a value matching the criteria.
-			 * 
-			 * Parameters:
-			 *  (String) val
-			 *  (Function) callback
-			 */
-			suggest: function(val, callback) {
-				$.get(
-					this.parents('form:first').attr('action') + 
-						'/field/URLSegment/suggest/?value=' + encodeURIComponent(this.val()),
-					function(data) {
-						callback.apply(this, arguments);
-					}
-				);
-			}
-		});
-
-		/**
 		 * Class: .cms-edit-form input[name=Title]
 		 * 
 		 * Input validation on the Title field
@@ -82,12 +24,20 @@
 			// Constructor: onmatch
 			onmatch : function() {
 				var self = this;
+				
+				var URLSegment = $('.cms-edit-form input[name=URLSegment]');
+				var LiveURLSegment = $('.cms-edit-form input[name=LiveURLSegment]');
 		
 				this.bind('change', function(e) {
-					self.updatePageTitleHeading();
-					self.updateURLSegment(jQuery('.cms-edit-form input[name=URLSegment]'));
-					// TODO We should really user-confirm these changes
-					self.parents('form').find('input[name=MetaTitle], input[name=MenuTitle]').val(self.val());
+					// Criteria for defining a "new" page
+					if ( (URLSegment.val().indexOf("new") == 0) && LiveURLSegment.val() == "" ) {
+						self.updatePageTitleHeading();
+						self.parents('form').find('input[name=MetaTitle], input[name=MenuTitle]').val(self.val());
+						// update the URLSegment
+						URLSegment.closest('.urlsegment').update(self);
+					} else {
+						return;
+					}
 				});
 				
 				this._super();
@@ -100,32 +50,6 @@
 			 */
 			updatePageTitleHeading: function() {
 				$('#page-title-heading').text(this.val());
-			},
-	
-			/**
-			 * Function: updateURLSegment
-			 * 
-			 * Parameters:
-			 *  (DOMElement) field
-			 */
-			updateURLSegment: function(field) {
-				if(!field || !field.length) return;
-				
-				// TODO The new URL value is determined asynchronously,
-				// which means we need to come up with an alternative system
-				// to ask user permission to change it.
-		
-				// TODO language/logic coupling
-				var isNew = this.val().indexOf("new") == 0;
-				var confirmMessage = ss.i18n._t(
-					'UPDATEURL.CONFIRMSIMPLE', 
-					'Do you want to update the URL from your new page title?'
-				);
-
-				// don't ask for replacement if record is considered 'new' as defined by its title
-				if(isNew || confirm(confirmMessage)) {
-					field.val(this.val()).trigger('change');
-				}
 			}
 		});
 	

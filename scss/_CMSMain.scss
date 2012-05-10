@@ -86,3 +86,31 @@
 		}
 	}
 }
+
+/** ------------------------------------------------------------------
+ * URLSegment field
+ * ----------------------------------------------------------------- */
+.field.urlsegment {
+
+	&.disabled {
+		color: #444;
+		padding-left: 0px;
+		margin-left: 0px;
+		background: none;
+		border-color: transparent;
+	}
+
+	.prefix,
+	.preview {
+		padding-top: 8px;
+		display: inline-block;
+	}
+
+	.prefix {
+		color: #777;
+	}
+
+	.cancel, .update, .edit {
+		margin-left: 7px;
+	}
+}
