@@ -1,5 +1,6 @@
 {
     "name": "silverstripe/silverstripe-cms",
+    "version": "dev-master",
     "require": {
         "php": ">=5.2.0"
     }
