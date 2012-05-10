@@ -19,7 +19,6 @@
         }
     ],
     "require": {
-        "php": ">=5.2.0",
-        "silverstripe/sapphire": "2.4.7"
+        "php": ">=5.2.0"
     }
 }
