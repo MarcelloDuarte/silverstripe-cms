@@ -1,0 +1,6 @@
+{
+    "name": "silverstripe/silverstripe-cms",
+    "require": {
+        "php": ">=5.2.0"
+    }
+}
