@@ -13,7 +13,7 @@
                 "source": {
                     "url": "git://github.com/MarcelloDuarte/silverstripe-cms.git",
                     "type": "git",
-                    "reference": "2.4.7"
+                    "reference": "v2.4.7"
                 }
             }
         }
