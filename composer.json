@@ -1,10 +1,10 @@
 {
-    "name": "silverstripe/silverstripe-cms",
+    "name": "silverstripe/cms",
     "repositories": [
         {
             "type": "package",
             "package": {
-                "name": "silverstripe/silverstripe-cms",
+                "name": "silverstripe/cms",
                 "version": "2.4.7",
                 "dist": {
                     "url": "http://www.silverstripe.org/assets/downloads/SilverStripe-v2.4.7.tar.gz",
